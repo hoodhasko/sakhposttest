@@ -1,12 +1,24 @@
-import React, { memo, useMemo } from 'react';
-import { StyleSheet, useWindowDimensions, View } from 'react-native';
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import {
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  ScrollView,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import Animated, {
-  Extrapolation,
   SharedValue,
-  interpolate,
-  useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
+  withTiming,
 } from 'react-native-reanimated';
 import { HeroBanner } from '../../types/hero';
 import { BannerItem } from './BannerItem';
@@ -15,88 +27,119 @@ interface BannerCarouselProps {
   banners: HeroBanner[];
 }
 
-const Dot = memo(
+const AUTOPLAY_INTERVAL_MS = 10000;
+const INDICATOR_WIDTH = 16;
+
+const Indicator = memo(
   ({
-    index,
-    itemWidth,
-    scrollX,
+    isActive,
+    progress,
   }: {
-    index: number;
-    itemWidth: number;
-    scrollX: SharedValue<number>;
+    isActive: boolean;
+    progress: SharedValue<number>;
   }) => {
-    const animatedStyle = useAnimatedStyle(() => {
-      const inputRange = [
-        (index - 1) * itemWidth,
-        index * itemWidth,
-        (index + 1) * itemWidth,
-      ];
-
-      const opacity = interpolate(
-        scrollX.value,
-        inputRange,
-        [0.35, 1, 0.35],
-        Extrapolation.CLAMP,
-      );
-      const scale = interpolate(
-        scrollX.value,
-        inputRange,
-        [0.8, 1.15, 0.8],
-        Extrapolation.CLAMP,
-      );
-
+    const fillStyle = useAnimatedStyle(() => {
       return {
-        opacity,
-        transform: [{ scale }],
+        width: isActive ? INDICATOR_WIDTH * progress.value : 0,
       };
-    }, [index, itemWidth]);
+    }, [isActive, progress]);
 
-    return <Animated.View style={[styles.dot, animatedStyle]} />;
+    return (
+      <View
+        style={[
+          styles.indicatorTrack,
+          isActive
+            ? styles.indicatorTrackActive
+            : styles.indicatorTrackInactive,
+        ]}
+      >
+        <Animated.View style={[styles.indicatorFill, fillStyle]} />
+      </View>
+    );
   },
 );
 
-Dot.displayName = 'Dot';
+Indicator.displayName = 'Indicator';
 
 export const BannerCarousel = memo(({ banners }: BannerCarouselProps) => {
   const { width } = useWindowDimensions();
   const itemWidth = width;
-  const scrollX = useSharedValue(0);
+  const scrollRef = useRef<ScrollView | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const autoplayProgress = useSharedValue(0);
 
-  const onScroll = useAnimatedScrollHandler({
-    onScroll: event => {
-      scrollX.value = event.contentOffset.x;
+  useEffect(() => {
+    autoplayProgress.value = 0;
+    autoplayProgress.value = withTiming(1, {
+      duration: AUTOPLAY_INTERVAL_MS,
+    });
+  }, [autoplayProgress, currentIndex]);
+
+  useEffect(() => {
+    if (banners.length < 2) {
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setCurrentIndex(prevIndex => {
+        const nextIndex = (prevIndex + 1) % banners.length;
+        scrollRef.current?.scrollTo({
+          animated: true,
+          x: nextIndex * itemWidth,
+          y: 0,
+        });
+        return nextIndex;
+      });
+    }, AUTOPLAY_INTERVAL_MS);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [banners.length, itemWidth]);
+
+  const handleMomentumEnd = useCallback(
+    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+      if (itemWidth <= 0) {
+        return;
+      }
+
+      const nextIndex = Math.round(
+        event.nativeEvent.contentOffset.x / itemWidth,
+      );
+      setCurrentIndex(Math.max(0, Math.min(nextIndex, banners.length - 1)));
     },
-  });
-
-  const dots = useMemo(
-    () =>
-      banners.map((banner, index) => (
-        <Dot
-          key={banner.id}
-          index={index}
-          itemWidth={itemWidth}
-          scrollX={scrollX}
-        />
-      )),
-    [banners, itemWidth, scrollX],
+    [banners.length, itemWidth],
   );
+
+  const indicators = useMemo(() => {
+    return banners.map((banner, index) => (
+      <Indicator
+        isActive={currentIndex === index}
+        key={banner.id}
+        progress={autoplayProgress}
+      />
+    ));
+  }, [autoplayProgress, banners, currentIndex]);
 
   return (
     <View style={styles.container}>
-      <Animated.ScrollView
+      <ScrollView
         bounces={false}
         decelerationRate="fast"
         horizontal
-        onScroll={onScroll}
+        onMomentumScrollEnd={handleMomentumEnd}
         pagingEnabled
+        ref={scrollRef}
         scrollEventThrottle={16}
         showsHorizontalScrollIndicator={false}
       >
         {banners.map(banner => (
           <BannerItem banner={banner} key={banner.id} width={itemWidth} />
         ))}
-      </Animated.ScrollView>
-      <View style={styles.pagination}>{dots}</View>
+      </ScrollView>
+      <View style={styles.paginationContainer}>
+        <View style={styles.paginationInner}>{indicators}</View>
+      </View>
     </View>
   );
 });
@@ -105,21 +148,37 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  pagination: {
+  paginationContainer: {
     alignItems: 'center',
     bottom: 48,
-    flexDirection: 'row',
-    justifyContent: 'center',
     left: 0,
     position: 'absolute',
     right: 0,
-    columnGap: 8,
   },
-  dot: {
+  paginationInner: {
+    backgroundColor: 'rgba(0, 0, 0, 0.35)',
+    borderRadius: 8,
+    columnGap: 6,
+    flexDirection: 'row',
+    padding: 4,
+  },
+  indicatorTrack: {
+    backgroundColor: '#B5B9CC',
+    borderRadius: 2,
+    height: 4,
+    overflow: 'hidden',
+  },
+  indicatorTrackActive: {
+    width: INDICATOR_WIDTH,
+    backgroundColor: 'rgba(181, 185, 204, 0.35)',
+  },
+  indicatorTrackInactive: {
+    width: 4,
+  },
+  indicatorFill: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 4,
-    height: 8,
-    width: 8,
+    borderRadius: 2,
+    height: 4,
   },
 });
 

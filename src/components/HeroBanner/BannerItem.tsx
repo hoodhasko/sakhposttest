@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { ImageBackground, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { HeroBanner } from '../../types/hero';
 
 interface BannerItemProps {
@@ -10,11 +10,7 @@ interface BannerItemProps {
 export const BannerItem = memo(({ banner, width }: BannerItemProps) => {
   return (
     <View style={[styles.cardContainer, { width }]}>
-      <ImageBackground
-        source={{ uri: banner.imageUrl }}
-        style={styles.image}
-        imageStyle={styles.imageRadius}
-      >
+      <View style={styles.image}>
         <View style={styles.overlay} />
         <View style={styles.content}>
           {banner.badge ? (
@@ -29,7 +25,7 @@ export const BannerItem = memo(({ banner, width }: BannerItemProps) => {
             </Text>
           ) : null}
         </View>
-      </ImageBackground>
+      </View>
     </View>
   );
 });
@@ -39,11 +35,9 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   image: {
+    backgroundColor: '#42255c',
     flex: 1,
     justifyContent: 'flex-end',
-  },
-  imageRadius: {
-    borderRadius: 0,
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
