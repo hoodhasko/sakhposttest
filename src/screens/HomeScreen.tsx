@@ -20,8 +20,9 @@ import { HeroBanner } from '../components/HeroBanner/HeroBanner';
 import { useHeroBanners } from '../hooks/useHeroBanners';
 import { useRestaurants } from '../hooks/useRestaurants';
 
-const COLLAPSED_SNAP_RATIO = 0.52;
+const COLLAPSED_SNAP_RATIO = 0.4;
 const EXPANDED_SNAP_RATIO = 1;
+const SHEET_OVERLAP_PX = 14;
 
 export const HomeScreen = () => {
   const { height } = useWindowDimensions();
@@ -37,11 +38,11 @@ export const HomeScreen = () => {
     useRestaurants();
 
   const collapsedPosition = useMemo(() => {
-    return height * (1 - COLLAPSED_SNAP_RATIO);
+    return height * (1 - COLLAPSED_SNAP_RATIO) - SHEET_OVERLAP_PX;
   }, [height]);
 
   const expandedPosition = useMemo(() => {
-    return height * (1 - EXPANDED_SNAP_RATIO);
+    return height * (1 - EXPANDED_SNAP_RATIO) - SHEET_OVERLAP_PX;
   }, [height]);
 
   const progress = useDerivedValue(() => {
@@ -64,7 +65,9 @@ export const HomeScreen = () => {
   }, []);
 
   const hasInitialLoader = bannersLoading && restaurantsLoading;
-  const heroHeight = useMemo(() => height * 0.5, [height]);
+  const heroHeight = useMemo(() => {
+    return height * (1 - COLLAPSED_SNAP_RATIO) + SHEET_OVERLAP_PX;
+  }, [height]);
 
   return (
     <View style={styles.screen}>
@@ -86,6 +89,7 @@ export const HomeScreen = () => {
         progress={progress}
         restaurants={restaurants}
         topInset={topInset}
+        topOverlap={SHEET_OVERLAP_PX}
       />
       {hasInitialLoader ? (
         <View pointerEvents="none" style={styles.loaderOverlay}>

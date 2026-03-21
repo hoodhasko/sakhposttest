@@ -45,6 +45,7 @@ interface BottomSheetContainerProps {
   animatedPosition: SharedValue<number>;
   progress: SharedValue<number>;
   topInset: number;
+  topOverlap: number;
   onIndexChange?: (index: number) => void;
 }
 
@@ -55,9 +56,10 @@ export const BottomSheetContainer = memo(
     animatedPosition,
     progress,
     topInset,
+    topOverlap,
     onIndexChange,
   }: BottomSheetContainerProps) => {
-    const snapPoints = useMemo(() => ['50%', '100%'], []);
+    const snapPoints = useMemo(() => ['40%', '100%'], []);
     const animationConfigs = useBottomSheetSpringConfigs({
       damping: 40,
       stiffness: 260,
@@ -84,7 +86,7 @@ export const BottomSheetContainer = memo(
           index={0}
           overDragResistanceFactor={4}
           snapPoints={snapPoints}
-          style={styles.sheet}
+          style={[styles.sheet, { marginTop: -topOverlap }]}
           onChange={onIndexChange}
         >
           <RestaurantList

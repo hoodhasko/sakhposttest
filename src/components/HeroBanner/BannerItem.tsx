@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: 16,
-    paddingBottom: 18,
+    paddingBottom: 72,
     rowGap: 6,
   },
   badge: {

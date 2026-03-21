@@ -33,7 +33,7 @@ export const HeroBanner = memo(
             scaleX: interpolate(
               progress.value,
               [0, 0.55, 1],
-              [1, 1, 0.95],
+              [1, 1, 0.85],
               Extrapolation.CLAMP,
             ),
           },
@@ -68,6 +68,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#0E1628',
   },
   bannerFrame: {
+    borderTopLeftRadius: 22,
+    borderTopRightRadius: 22,
     flex: 1,
     overflow: 'hidden',
   },
