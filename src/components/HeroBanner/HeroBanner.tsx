@@ -11,66 +11,53 @@ import { BannerCarousel } from './BannerCarousel';
 
 interface HeroBannerProps {
   banners: HeroBannerModel[];
-  animatedPosition: SharedValue<number>;
-  collapsedPosition: number;
-  expandedPosition: number;
+  progress: SharedValue<number>;
   heroHeight: number;
 }
 
 export const HeroBanner = memo(
-  ({
-    banners,
-    animatedPosition,
-    collapsedPosition,
-    expandedPosition,
-    heroHeight,
-  }: HeroBannerProps) => {
+  ({ banners, progress, heroHeight }: HeroBannerProps) => {
     const animatedHeroStyle = useAnimatedStyle(() => {
-      const progress = interpolate(
-        animatedPosition.value,
-        [collapsedPosition, expandedPosition],
-        [0, 1],
-        Extrapolation.CLAMP,
-      );
-
       return {
         transform: [
           {
             scale: interpolate(
-              progress,
+              progress.value,
               [0, 1],
-              [1, 0.9],
+              [1, 0.92],
               Extrapolation.CLAMP,
             ),
           },
           {
             translateY: interpolate(
-              progress,
+              progress.value,
               [0, 1],
-              [0, -50],
+              [0, -30],
               Extrapolation.CLAMP,
             ),
           },
         ] as never,
       };
-    }, [collapsedPosition, expandedPosition]);
+    }, [progress]);
 
     const animatedOverlayStyle = useAnimatedStyle(() => {
-      const progress = interpolate(
-        animatedPosition.value,
-        [collapsedPosition, expandedPosition],
-        [0, 1],
-        Extrapolation.CLAMP,
-      );
-
       return {
-        opacity: interpolate(progress, [0, 1], [0, 0.24], Extrapolation.CLAMP),
+        opacity: interpolate(
+          progress.value,
+          [0, 1],
+          [0, 0.24],
+          Extrapolation.CLAMP,
+        ),
       };
-    }, [collapsedPosition, expandedPosition]);
+    }, [progress]);
 
     return (
       <View style={[styles.container, { height: heroHeight }]}>
-        <Animated.View style={[styles.bannerFrame, animatedHeroStyle]}>
+        <Animated.View
+          renderToHardwareTextureAndroid
+          shouldRasterizeIOS
+          style={[styles.bannerFrame, animatedHeroStyle]}
+        >
           <BannerCarousel banners={banners} />
           <Animated.View
             pointerEvents="none"
