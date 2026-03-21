@@ -1,7 +1,6 @@
 import React, { memo, useCallback, useMemo } from 'react';
 import { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import {
-  Image,
   ListRenderItem,
   ScrollView,
   StyleSheet,
@@ -23,6 +22,7 @@ import {
 interface RestaurantListProps {
   restaurants: Restaurant[];
   progress: SharedValue<number>;
+  topInset: number;
 }
 
 const ITEM_SIZE = RESTAURANT_CARD_HEIGHT + 12;
@@ -91,7 +91,6 @@ const StoriesRow = memo(({ progress }: { progress: SharedValue<number> }) => {
       >
         {storiesMock.map(story => (
           <View key={story.id} style={styles.storyItem}>
-            <Image source={{ uri: story.imageUrl }} style={styles.storyImage} />
             <Text numberOfLines={1} style={styles.storyTitle}>
               {story.title}
             </Text>
@@ -104,8 +103,39 @@ const StoriesRow = memo(({ progress }: { progress: SharedValue<number> }) => {
 
 StoriesRow.displayName = 'StoriesRow';
 
+const AnimatedHeader = memo(
+  ({
+    children,
+    progress,
+    topInset,
+  }: {
+    children?: React.ReactNode;
+    progress: SharedValue<number>;
+    topInset: number;
+  }) => {
+    const animatedStyle = useAnimatedStyle(() => {
+      return {
+        paddingTop: interpolate(
+          progress.value,
+          [0.75, 1],
+          [2, topInset + 8],
+          Extrapolation.CLAMP,
+        ),
+      };
+    }, [progress, topInset]);
+
+    return (
+      <Animated.View style={[styles.headerWrapper, animatedStyle]}>
+        {children}
+      </Animated.View>
+    );
+  },
+);
+
+AnimatedHeader.displayName = 'AnimatedHeader';
+
 export const RestaurantList = memo(
-  ({ restaurants, progress }: RestaurantListProps) => {
+  ({ restaurants, progress, topInset }: RestaurantListProps) => {
     const keyExtractor = useCallback((item: Restaurant) => item.id, []);
 
     const renderItem = useCallback<ListRenderItem<Restaurant>>(({ item }) => {
@@ -123,14 +153,14 @@ export const RestaurantList = memo(
 
     const headerComponent = useMemo(() => {
       return (
-        <View style={styles.headerWrapper}>
+        <AnimatedHeader progress={progress} topInset={topInset}>
           <StoriesRow progress={progress} />
           <View style={styles.header}>
             <Text style={styles.title}>Restaurants nearby</Text>
           </View>
-        </View>
+        </AnimatedHeader>
       );
-    }, [progress]);
+    }, [progress, topInset]);
 
     return (
       <BottomSheetFlatList
@@ -164,13 +194,13 @@ const styles = StyleSheet.create({
   },
   storyItem: {
     alignItems: 'center',
+    backgroundColor: '#E6EBF3',
+    borderRadius: 16,
+    minHeight: 36,
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 8,
     width: 76,
-  },
-  storyImage: {
-    borderRadius: 30,
-    height: 60,
-    marginBottom: 6,
-    width: 60,
   },
   storyTitle: {
     color: '#425067',

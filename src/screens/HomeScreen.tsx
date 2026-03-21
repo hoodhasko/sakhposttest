@@ -14,6 +14,7 @@ import Animated, {
   useDerivedValue,
   useSharedValue,
 } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomSheetContainer } from '../components/BottomSheetContainer/BottomSheetContainer';
 import { HeroBanner } from '../components/HeroBanner/HeroBanner';
 import { useHeroBanners } from '../hooks/useHeroBanners';
@@ -24,6 +25,7 @@ const EXPANDED_SNAP_RATIO = 1;
 
 export const HomeScreen = () => {
   const { height } = useWindowDimensions();
+  const { top: topInset } = useSafeAreaInsets();
 
   const animatedIndex = useSharedValue(0);
   const animatedPosition = useSharedValue(height * (1 - COLLAPSED_SNAP_RATIO));
@@ -57,14 +59,9 @@ export const HomeScreen = () => {
 
   const animatedBackdropStyle = useAnimatedStyle(() => {
     return {
-      opacity: interpolate(
-        progress.value,
-        [0, 1],
-        [0, 0.3],
-        Extrapolation.CLAMP,
-      ),
+      opacity: 0,
     };
-  }, [progress]);
+  }, []);
 
   const hasInitialLoader = bannersLoading && restaurantsLoading;
   const heroHeight = useMemo(() => height * 0.5, [height]);
@@ -76,6 +73,7 @@ export const HomeScreen = () => {
         banners={banners}
         heroHeight={heroHeight}
         progress={progress}
+        topInset={topInset}
       />
       <Animated.View
         pointerEvents="none"
@@ -87,6 +85,7 @@ export const HomeScreen = () => {
         onIndexChange={handleSheetIndexChange}
         progress={progress}
         restaurants={restaurants}
+        topInset={topInset}
       />
       {hasInitialLoader ? (
         <View pointerEvents="none" style={styles.loaderOverlay}>

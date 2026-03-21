@@ -44,6 +44,7 @@ interface BottomSheetContainerProps {
   animatedIndex: SharedValue<number>;
   animatedPosition: SharedValue<number>;
   progress: SharedValue<number>;
+  topInset: number;
   onIndexChange?: (index: number) => void;
 }
 
@@ -53,6 +54,7 @@ export const BottomSheetContainer = memo(
     animatedIndex,
     animatedPosition,
     progress,
+    topInset,
     onIndexChange,
   }: BottomSheetContainerProps) => {
     const snapPoints = useMemo(() => ['50%', '100%'], []);
@@ -85,7 +87,11 @@ export const BottomSheetContainer = memo(
           style={styles.sheet}
           onChange={onIndexChange}
         >
-          <RestaurantList progress={progress} restaurants={restaurants} />
+          <RestaurantList
+            progress={progress}
+            restaurants={restaurants}
+            topInset={topInset}
+          />
         </BottomSheet>
       </View>
     );

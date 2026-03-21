@@ -13,43 +13,41 @@ interface HeroBannerProps {
   banners: HeroBannerModel[];
   progress: SharedValue<number>;
   heroHeight: number;
+  topInset: number;
 }
 
 export const HeroBanner = memo(
-  ({ banners, progress, heroHeight }: HeroBannerProps) => {
+  ({ banners, progress, heroHeight, topInset }: HeroBannerProps) => {
     const animatedHeroStyle = useAnimatedStyle(() => {
       return {
         transform: [
           {
-            scale: interpolate(
+            translateY: interpolate(
               progress.value,
-              [0, 1],
-              [1, 0.92],
+              [0, 0.55, 1],
+              [0, topInset, topInset],
               Extrapolation.CLAMP,
             ),
           },
           {
-            translateY: interpolate(
+            scaleX: interpolate(
               progress.value,
-              [0, 1],
-              [0, -30],
+              [0, 0.55, 1],
+              [1, 1, 0.95],
+              Extrapolation.CLAMP,
+            ),
+          },
+          {
+            scaleY: interpolate(
+              progress.value,
+              [0, 0.55, 1],
+              [1, 1, 0.9],
               Extrapolation.CLAMP,
             ),
           },
         ] as never,
       };
-    }, [progress]);
-
-    const animatedOverlayStyle = useAnimatedStyle(() => {
-      return {
-        opacity: interpolate(
-          progress.value,
-          [0, 1],
-          [0, 0.24],
-          Extrapolation.CLAMP,
-        ),
-      };
-    }, [progress]);
+    }, [progress, topInset]);
 
     return (
       <View style={[styles.container, { height: heroHeight }]}>
@@ -59,10 +57,6 @@ export const HeroBanner = memo(
           style={[styles.bannerFrame, animatedHeroStyle]}
         >
           <BannerCarousel banners={banners} />
-          <Animated.View
-            pointerEvents="none"
-            style={[styles.overlay, animatedOverlayStyle]}
-          />
         </Animated.View>
       </View>
     );
@@ -76,10 +70,6 @@ const styles = StyleSheet.create({
   bannerFrame: {
     flex: 1,
     overflow: 'hidden',
-  },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#05070A',
   },
 });
 
