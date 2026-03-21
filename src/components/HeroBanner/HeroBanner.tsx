@@ -14,7 +14,7 @@ interface HeroBannerProps {
   animatedPosition: SharedValue<number>;
   collapsedPosition: number;
   expandedPosition: number;
-  topInset: number;
+  heroHeight: number;
 }
 
 export const HeroBanner = memo(
@@ -23,7 +23,7 @@ export const HeroBanner = memo(
     animatedPosition,
     collapsedPosition,
     expandedPosition,
-    topInset,
+    heroHeight,
   }: HeroBannerProps) => {
     const animatedHeroStyle = useAnimatedStyle(() => {
       const progress = interpolate(
@@ -34,30 +34,24 @@ export const HeroBanner = memo(
       );
 
       return {
-        borderRadius: interpolate(
-          progress,
-          [0, 1],
-          [26, 14],
-          Extrapolation.CLAMP,
-        ),
         transform: [
-          {
-            translateY: interpolate(
-              progress,
-              [0, 1],
-              [0, -30],
-              Extrapolation.CLAMP,
-            ),
-          },
           {
             scale: interpolate(
               progress,
               [0, 1],
-              [1, 0.92],
+              [1, 0.9],
               Extrapolation.CLAMP,
             ),
           },
-        ],
+          {
+            translateY: interpolate(
+              progress,
+              [0, 1],
+              [0, -50],
+              Extrapolation.CLAMP,
+            ),
+          },
+        ] as never,
       };
     }, [collapsedPosition, expandedPosition]);
 
@@ -70,12 +64,12 @@ export const HeroBanner = memo(
       );
 
       return {
-        opacity: interpolate(progress, [0, 1], [0, 0.2], Extrapolation.CLAMP),
+        opacity: interpolate(progress, [0, 1], [0, 0.24], Extrapolation.CLAMP),
       };
     }, [collapsedPosition, expandedPosition]);
 
     return (
-      <View style={[styles.container, { paddingTop: topInset + 12 }]}>
+      <View style={[styles.container, { height: heroHeight }]}>
         <Animated.View style={[styles.bannerFrame, animatedHeroStyle]}>
           <BannerCarousel banners={banners} />
           <Animated.View
@@ -90,8 +84,7 @@ export const HeroBanner = memo(
 
 const styles = StyleSheet.create({
   container: {
-    height: 300,
-    zIndex: 1,
+    backgroundColor: '#0E1628',
   },
   bannerFrame: {
     flex: 1,

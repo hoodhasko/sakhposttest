@@ -36,20 +36,19 @@ export const BannerItem = memo(({ banner, width }: BannerItemProps) => {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    height: 230,
-    paddingHorizontal: 16,
+    height: '100%',
   },
   image: {
     flex: 1,
     justifyContent: 'flex-end',
   },
   imageRadius: {
-    borderRadius: 26,
+    borderRadius: 0,
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0, 0, 0, 0.25)',
-    borderRadius: 26,
+    borderRadius: 0,
   },
   content: {
     paddingHorizontal: 16,

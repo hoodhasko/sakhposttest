@@ -5,18 +5,16 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSharedValue } from 'react-native-reanimated';
 import { BottomSheetContainer } from '../components/BottomSheetContainer/BottomSheetContainer';
 import { HeroBanner } from '../components/HeroBanner/HeroBanner';
 import { useHeroBanners } from '../hooks/useHeroBanners';
 import { useRestaurants } from '../hooks/useRestaurants';
 
-const COLLAPSED_SNAP_RATIO = 0.3;
-const EXPANDED_SNAP_RATIO = 0.92;
+const COLLAPSED_SNAP_RATIO = 0.52;
+const EXPANDED_SNAP_RATIO = 1;
 
 export const HomeScreen = () => {
-  const insets = useSafeAreaInsets();
   const { height } = useWindowDimensions();
 
   const animatedIndex = useSharedValue(0);
@@ -35,19 +33,16 @@ export const HomeScreen = () => {
   }, [height]);
 
   const hasInitialLoader = bannersLoading && restaurantsLoading;
+  const heroHeight = useMemo(() => height * 0.5, [height]);
 
   return (
     <View style={styles.screen}>
-      <View style={styles.backdrop}>
-        <View style={styles.backdropGradientA} />
-        <View style={styles.backdropGradientB} />
-      </View>
       <HeroBanner
         animatedPosition={animatedPosition}
         banners={banners}
         collapsedPosition={collapsedPosition}
         expandedPosition={expandedPosition}
-        topInset={insets.top}
+        heroHeight={heroHeight}
       />
       <BottomSheetContainer
         animatedIndex={animatedIndex}
@@ -65,32 +60,8 @@ export const HomeScreen = () => {
 
 const styles = StyleSheet.create({
   screen: {
-    backgroundColor: '#0B1020',
+    backgroundColor: '#FFFFFF',
     flex: 1,
-  },
-  backdrop: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#11182A',
-  },
-  backdropGradientA: {
-    backgroundColor: '#19346A',
-    borderRadius: 200,
-    height: 300,
-    opacity: 0.75,
-    position: 'absolute',
-    right: -90,
-    top: -40,
-    width: 300,
-  },
-  backdropGradientB: {
-    backgroundColor: '#0E2448',
-    borderRadius: 220,
-    bottom: 360,
-    height: 260,
-    left: -110,
-    opacity: 0.7,
-    position: 'absolute',
-    width: 260,
   },
   loaderOverlay: {
     ...StyleSheet.absoluteFillObject,
