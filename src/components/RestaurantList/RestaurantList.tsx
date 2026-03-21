@@ -2,6 +2,7 @@ import React, { memo, useCallback, useMemo } from 'react';
 import { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import {
   ListRenderItem,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -27,81 +28,98 @@ interface RestaurantListProps {
 
 const ITEM_SIZE = RESTAURANT_CARD_HEIGHT + 12;
 
-const storiesMock = [
+const quickFilters = [
   {
-    id: 'story-1',
-    title: 'Top picks',
-    imageUrl:
-      'https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=240&q=80',
+    id: 'filter-1',
+    title: 'Popular',
+    active: true,
   },
   {
-    id: 'story-2',
+    id: 'filter-2',
     title: 'Free delivery',
-    imageUrl:
-      'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=240&q=80',
   },
   {
-    id: 'story-3',
-    title: 'Lunch deals',
-    imageUrl:
-      'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?auto=format&fit=crop&w=240&q=80',
-  },
-  {
-    id: 'story-4',
-    title: 'New here',
-    imageUrl:
-      'https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?auto=format&fit=crop&w=240&q=80',
-  },
-  {
-    id: 'story-5',
+    id: 'filter-3',
     title: 'Fastest',
-    imageUrl:
-      'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=240&q=80',
+  },
+  {
+    id: 'filter-4',
+    title: 'Rating 4.5+',
+  },
+  {
+    id: 'filter-5',
+    title: 'Open now',
   },
 ];
 
-const StoriesRow = memo(({ progress }: { progress: SharedValue<number> }) => {
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      opacity: interpolate(
-        progress.value,
-        [0.4, 0.8],
-        [0, 1],
-        Extrapolation.CLAMP,
-      ),
-      transform: [
-        {
-          translateY: interpolate(
-            progress.value,
-            [0.4, 0.8],
-            [20, 0],
-            Extrapolation.CLAMP,
-          ),
-        },
-      ] as never,
-    };
-  });
+const QuickFiltersRow = memo(
+  ({ progress }: { progress: SharedValue<number> }) => {
+    const animatedStyle = useAnimatedStyle(() => {
+      return {
+        height: interpolate(
+          progress.value,
+          [0.35, 0.8],
+          [0, 44],
+          Extrapolation.CLAMP,
+        ),
+        marginBottom: interpolate(
+          progress.value,
+          [0.35, 0.8],
+          [0, 4],
+          Extrapolation.CLAMP,
+        ),
+        opacity: interpolate(
+          progress.value,
+          [0.4, 0.8],
+          [0, 1],
+          Extrapolation.CLAMP,
+        ),
+        transform: [
+          {
+            translateY: interpolate(
+              progress.value,
+              [0.4, 0.8],
+              [20, 0],
+              Extrapolation.CLAMP,
+            ),
+          },
+        ] as never,
+      };
+    });
 
-  return (
-    <Animated.View style={[styles.storiesContainer, animatedStyle]}>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.storiesContent}
-      >
-        {storiesMock.map(story => (
-          <View key={story.id} style={styles.storyItem}>
-            <Text numberOfLines={1} style={styles.storyTitle}>
-              {story.title}
-            </Text>
-          </View>
-        ))}
-      </ScrollView>
-    </Animated.View>
-  );
-});
+    return (
+      <Animated.View style={[styles.filtersContainer, animatedStyle]}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.filtersContent}
+        >
+          {quickFilters.map(filter => (
+            <Pressable
+              key={filter.id}
+              style={[
+                styles.filterItem,
+                filter.active ? styles.filterItemActive : null,
+              ]}
+            >
+              <Text
+                numberOfLines={1}
+                style={[
+                  styles.filterTitle,
+                  filter.active ? styles.filterTitleActive : null,
+                ]}
+              >
+                {filter.title}
+              </Text>
+            </Pressable>
+          ))}
+        </ScrollView>
+      </Animated.View>
+    );
+  },
+);
 
-StoriesRow.displayName = 'StoriesRow';
+QuickFiltersRow.displayName = 'QuickFiltersRow';
 
 const AnimatedHeader = memo(
   ({
@@ -118,7 +136,7 @@ const AnimatedHeader = memo(
         paddingTop: interpolate(
           progress.value,
           [0.75, 1],
-          [2, topInset + 8],
+          [2, topInset + 4],
           Extrapolation.CLAMP,
         ),
       };
@@ -154,7 +172,7 @@ export const RestaurantList = memo(
     const headerComponent = useMemo(() => {
       return (
         <AnimatedHeader progress={progress} topInset={topInset}>
-          <StoriesRow progress={progress} />
+          <QuickFiltersRow progress={progress} />
           <View style={styles.header}>
             <Text style={styles.title}>Restaurants nearby</Text>
           </View>
@@ -185,32 +203,36 @@ const styles = StyleSheet.create({
   headerWrapper: {
     paddingTop: 2,
   },
-  storiesContainer: {
-    marginBottom: 8,
+  filtersContainer: {
+    overflow: 'hidden',
   },
-  storiesContent: {
+  filtersContent: {
     columnGap: 12,
     paddingHorizontal: 16,
   },
-  storyItem: {
+  filterItem: {
     alignItems: 'center',
     backgroundColor: '#E6EBF3',
-    borderRadius: 16,
-    minHeight: 36,
+    borderRadius: 18,
+    height: 36,
     justifyContent: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    width: 76,
+    paddingHorizontal: 14,
   },
-  storyTitle: {
+  filterItemActive: {
+    backgroundColor: '#111A2E',
+  },
+  filterTitle: {
     color: '#425067',
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: '700',
+  },
+  filterTitleActive: {
+    color: '#FFFFFF',
   },
   header: {
     paddingBottom: 8,
     paddingHorizontal: 16,
-    paddingTop: 6,
+    paddingTop: 2,
   },
   title: {
     color: '#0F1728',
