@@ -14,14 +14,13 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import Animated, {
+import {
   cancelAnimation,
-  SharedValue,
-  useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
 import {HeroBannerResponseItem} from '../../types/hero';
+import {BannerIndicator} from './banner-indicator';
 import {BannerItem} from './banner-item';
 
 interface BannerCarouselProps {
@@ -30,37 +29,6 @@ interface BannerCarouselProps {
 }
 
 const AUTOPLAY_INTERVAL_MS = 5000;
-const INDICATOR_WIDTH = 16;
-
-const Indicator = memo(
-  ({
-    isActive,
-    progress,
-  }: {
-    isActive: boolean;
-    progress: SharedValue<number>;
-  }) => {
-    const fillStyle = useAnimatedStyle(() => {
-      return {
-        width: isActive ? INDICATOR_WIDTH * progress.value : 0,
-      };
-    }, [isActive, progress]);
-
-    return (
-      <View
-        style={[
-          styles.indicatorTrack,
-          isActive
-            ? styles.indicatorTrackActive
-            : styles.indicatorTrackInactive,
-        ]}>
-        <Animated.View style={[styles.indicatorFill, fillStyle]} />
-      </View>
-    );
-  },
-);
-
-Indicator.displayName = 'Indicator';
 
 export const BannerCarousel = memo(
   ({banners, isAutoplayPaused}: BannerCarouselProps) => {
@@ -119,7 +87,7 @@ export const BannerCarousel = memo(
 
     const indicators = useMemo(() => {
       return banners.map((banner, index) => (
-        <Indicator
+        <BannerIndicator
           isActive={currentIndex === index}
           key={banner.id}
           progress={autoplayProgress}
@@ -168,24 +136,4 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 4,
   },
-  indicatorTrack: {
-    backgroundColor: '#B5B9CC',
-    borderRadius: 2,
-    height: 4,
-    overflow: 'hidden',
-  },
-  indicatorTrackActive: {
-    width: INDICATOR_WIDTH,
-    backgroundColor: 'rgba(181, 185, 204, 0.35)',
-  },
-  indicatorTrackInactive: {
-    width: 4,
-  },
-  indicatorFill: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 2,
-    height: 4,
-  },
 });
-
-BannerCarousel.displayName = 'BannerCarousel';

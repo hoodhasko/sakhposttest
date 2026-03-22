@@ -82,5 +82,3 @@ const styles = StyleSheet.create({
     zIndex: 20,
   },
 });
-
-BottomSheetContainer.displayName = 'BottomSheetContainer';
