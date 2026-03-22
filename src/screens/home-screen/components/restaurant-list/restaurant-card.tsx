@@ -1,6 +1,6 @@
 import React, {memo} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
-import {ListVendorsFiltersItem} from '../../types';
+import {ListVendorsFiltersItem} from '../../../../types';
 
 interface RestaurantCardProps {
   restaurant: ListVendorsFiltersItem;

@@ -2,8 +2,8 @@ import React, {memo, useCallback, useMemo} from 'react';
 import {BottomSheetFlatList} from '@gorhom/bottom-sheet';
 import {ListRenderItem, StyleSheet, Text, View} from 'react-native';
 import {SharedValue} from 'react-native-reanimated';
-import {ListVendorsFiltersItem} from '../../types';
-import {RESTAURANT_CARD_HEIGHT, RestaurantCard} from '../restaurant-card';
+import {ListVendorsFiltersItem} from '../../../../types';
+import {RESTAURANT_CARD_HEIGHT, RestaurantCard} from './restaurant-card';
 import {AnimatedHeader} from './animated-header';
 import {QuickFiltersRow} from './quick-filters-row';
 

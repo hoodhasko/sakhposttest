@@ -2,7 +2,7 @@ import React, {memo, useMemo} from 'react';
 import BottomSheet, {useBottomSheetSpringConfigs} from '@gorhom/bottom-sheet';
 import {StyleSheet, View} from 'react-native';
 import {SharedValue} from 'react-native-reanimated';
-import {ListVendorsFiltersItem} from '../../types';
+import {ListVendorsFiltersItem} from '../../../../types';
 import {RestaurantList} from '../restaurant-list/restaurant-list';
 
 interface BottomSheetContainerProps {

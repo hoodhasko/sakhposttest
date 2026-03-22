@@ -1,6 +1,6 @@
 import React, {memo} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
-import {HeroBannerResponseItem} from '../../types/hero';
+import {HeroBannerResponseItem} from '../../../../types/hero';
 
 interface BannerItemProps {
   banner: HeroBannerResponseItem;

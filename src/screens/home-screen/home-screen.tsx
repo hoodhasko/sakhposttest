@@ -1,11 +1,8 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import {
-  ActivityIndicator,
-  Pressable,
   StatusBar,
   StatusBarStyle,
   StyleSheet,
-  Text,
   View,
   useWindowDimensions,
 } from 'react-native';
@@ -19,9 +16,13 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {BottomSheetContainer} from '../components/bottom-sheet-container/bottom-sheet-container';
-import {HeroBanner} from '../components/hero-banner/hero-banner';
-import {useHeroBanners, useVendorsFilters} from '../hooks';
+import {useHeroBanners, useVendorsFilters} from '../../hooks';
+import {
+  ErrorState,
+  LoadingState,
+  HeroBanner,
+  BottomSheetContainer,
+} from './components';
 
 const COLLAPSED_SNAP_RATIO = 0.4;
 const EXPANDED_SNAP_RATIO = 1;
@@ -99,25 +100,11 @@ export const HomeScreen = () => {
   }, [refetchBanners, refetchVendors]);
 
   if (hasInitialLoader) {
-    return (
-      <View pointerEvents="none" style={styles.loaderOverlay}>
-        <ActivityIndicator color="red" size="large" />
-      </View>
-    );
+    return <LoadingState />;
   }
 
   if (hasLoadError) {
-    return (
-      <View style={styles.errorContainer}>
-        <Text style={styles.errorTitle}>Ошибка загрузки данных</Text>
-        <Text style={styles.errorDescription}>
-          Проверьте подключение к интернету и повторите попытку
-        </Text>
-        <Pressable onPress={handleRetry} style={styles.retryButton}>
-          <Text style={styles.retryButtonText}>Повторить</Text>
-        </Pressable>
-      </View>
-    );
+    return <ErrorState onRetry={handleRetry} />;
   }
 
   return (
@@ -153,45 +140,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#0E1628',
     flex: 1,
   },
-  loaderOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ffffff',
-  },
   backdrop: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: '#05070A',
     zIndex: 15,
-  },
-  errorContainer: {
-    alignItems: 'center',
-    backgroundColor: '#0E1628',
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 24,
-  },
-  errorTitle: {
-    color: '#FFFFFF',
-    fontSize: 20,
-    fontWeight: '700',
-  },
-  errorDescription: {
-    color: '#D0D6E2',
-    fontSize: 14,
-    marginTop: 8,
-    textAlign: 'center',
-  },
-  retryButton: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    marginTop: 20,
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-  },
-  retryButtonText: {
-    color: '#101828',
-    fontSize: 14,
-    fontWeight: '700',
   },
 });
