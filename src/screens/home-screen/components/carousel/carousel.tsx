@@ -6,26 +6,26 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import {HeroBannerResponseItem} from '@models/index';
+import {HeroBannerResponseItem as BannerResponseItem} from '@models/index';
 import {BannerCarousel} from './banner-carousel';
 
-interface HeroBannerProps {
-  banners: HeroBannerResponseItem[];
+interface CarouselProps {
+  banners: BannerResponseItem[];
   progress: SharedValue<number>;
-  heroHeight: number;
+  carouselHeight: number;
   isAutoplayPaused: boolean;
   topInset: number;
 }
 
-export const HeroBanner = memo(
+export const Carousel = memo(
   ({
     banners,
     progress,
-    heroHeight,
+    carouselHeight,
     isAutoplayPaused,
     topInset,
-  }: HeroBannerProps) => {
-    const animatedHeroStyle = useAnimatedStyle(() => {
+  }: CarouselProps) => {
+    const animatedCarouselStyle = useAnimatedStyle(() => {
       return {
         transform: [
           {
@@ -57,11 +57,11 @@ export const HeroBanner = memo(
     }, [progress, topInset]);
 
     return (
-      <View style={[styles.container, {height: heroHeight}]}>
+      <View style={[styles.container, {height: carouselHeight}]}>
         <Animated.View
           renderToHardwareTextureAndroid
           shouldRasterizeIOS
-          style={[styles.bannerFrame, animatedHeroStyle]}>
+          style={[styles.bannerFrame, animatedCarouselStyle]}>
           <BannerCarousel
             banners={banners}
             isAutoplayPaused={isAutoplayPaused}

@@ -20,7 +20,7 @@ import {useHeroBanners, useVendorsFilters} from '@app/hooks';
 import {
   ErrorState,
   LoadingState,
-  HeroBanner,
+  Carousel,
   BottomSheetContainer,
 } from './components';
 
@@ -90,7 +90,7 @@ export const HomeScreen = () => {
 
   const hasInitialLoader = bannersLoading && restaurantsLoading;
   const hasLoadError = bannersError || vendorsError;
-  const heroHeight = useMemo(() => {
+  const carouselHeight = useMemo(() => {
     return height * (1 - COLLAPSED_SNAP_RATIO) + SHEET_OVERLAP_PX;
   }, [height]);
 
@@ -111,9 +111,9 @@ export const HomeScreen = () => {
     <View style={styles.screen}>
       <StatusBar animated barStyle={statusBarStyle} />
 
-      <HeroBanner
+      <Carousel
         banners={banners}
-        heroHeight={heroHeight}
+        carouselHeight={carouselHeight}
         isAutoplayPaused={isAutoplayPaused}
         progress={progress}
         topInset={topInset}

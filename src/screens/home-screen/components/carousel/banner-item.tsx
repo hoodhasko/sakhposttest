@@ -1,11 +1,11 @@
 import React, {memo} from 'react';
 import {Image, StyleSheet, View} from 'react-native';
-import {HeroBannerResponseItem} from '@models/index';
+import {HeroBannerResponseItem as BannerResponseItem} from '@models/index';
 import {GolosText} from '@components/ui';
 import {BASE_COLORS} from '@config/constants';
 
 interface BannerItemProps {
-  banner: HeroBannerResponseItem;
+  banner: BannerResponseItem;
   width: number;
 }
 
