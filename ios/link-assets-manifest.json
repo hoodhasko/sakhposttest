@@ -1,0 +1,29 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Golos/GolosText-Black.ttf",
+      "sha1": "e6722eaddeeabed103be8b1118c6f95df427fa8b"
+    },
+    {
+      "path": "assets/fonts/Golos/GolosText-Bold.ttf",
+      "sha1": "d177fc72766cc98e8d4768aca1e65a24d9ff323c"
+    },
+    {
+      "path": "assets/fonts/Golos/GolosText-ExtraBold.ttf",
+      "sha1": "f2f3712a3f91ebe32524efa14df5d832b65c3409"
+    },
+    {
+      "path": "assets/fonts/Golos/GolosText-Medium.ttf",
+      "sha1": "f984e30c8b0362809380a6c36a11dd219fa4e4ca"
+    },
+    {
+      "path": "assets/fonts/Golos/GolosText-Regular.ttf",
+      "sha1": "48870644b5ac1f213fe5422ade65f3e3163b1ae0"
+    },
+    {
+      "path": "assets/fonts/Golos/GolosText-SemiBold.ttf",
+      "sha1": "f9c8af5f76e6fdf4ce77eac72ea5fadf296ecefc"
+    }
+  ]
+}

@@ -34,7 +34,7 @@
 		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -51,5 +51,14 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>GolosText-Bold.ttf</string>
+		<string>GolosText-Black.ttf</string>
+		<string>GolosText-Regular.ttf</string>
+		<string>GolosText-ExtraBold.ttf</string>
+		<string>GolosText-Medium.ttf</string>
+		<string>GolosText-SemiBold.ttf</string>
+	</array>
 </dict>
 </plist>
