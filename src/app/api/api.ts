@@ -56,7 +56,7 @@ const normalizeApiError = (
     typeof error === 'object' &&
     error !== null &&
     'name' in error &&
-    (error as { name?: string }).name === 'AbortError';
+    (error as {name?: string}).name === 'AbortError';
 
   if (isAbortError) {
     return new ApiError('TIMEOUT_ERROR', status, 'Request timed out', payload);

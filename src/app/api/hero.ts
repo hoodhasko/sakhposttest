@@ -1,5 +1,5 @@
-import { api } from './api';
-import { HeroBannersResponse } from '../types/hero';
+import {api} from './api';
+import {HeroBannersResponse} from '../../types/hero';
 
 const HERO_BANNERS_ENDPOINT = '/api/customer/ads/hero-banners';
 

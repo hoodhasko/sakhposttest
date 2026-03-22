@@ -3,7 +3,7 @@ import {fetchVendorsFilters} from '../../../api';
 import {
   ListVendorsFiltersItem,
   ListVendorsFiltersResponse,
-} from '../../../types';
+} from '../../../../types';
 
 export const vendorsFiltersQueryKey = ['vendors-filters'];
 
