@@ -7,7 +7,7 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 import {HeroBannerResponseItem} from '../../types/hero';
-import {BannerCarousel} from './BannerCarousel';
+import {BannerCarousel} from './banner-carousel';
 
 interface HeroBannerProps {
   banners: HeroBannerResponseItem[];

@@ -1,17 +1,17 @@
-import React, { memo } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { HeroBannerResponseItem } from '../../types/hero';
+import React, {memo} from 'react';
+import {Image, StyleSheet, Text, View} from 'react-native';
+import {HeroBannerResponseItem} from '../../types/hero';
 
 interface BannerItemProps {
   banner: HeroBannerResponseItem;
   width: number;
 }
 
-export const BannerItem = memo(({ banner, width }: BannerItemProps) => {
+export const BannerItem = memo(({banner, width}: BannerItemProps) => {
   return (
-    <View style={[styles.cardContainer, { width }]}>
+    <View style={[styles.cardContainer, {width}]}>
       <View style={styles.image}>
-        <Image source={{ uri: banner.media.url }} style={styles.bannerImage} />
+        <Image source={{uri: banner.media.url}} style={styles.bannerImage} />
         <View style={styles.overlay} />
         <View style={styles.content}>
           <Text numberOfLines={2} style={styles.title}>

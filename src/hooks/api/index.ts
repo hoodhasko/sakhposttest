@@ -1,2 +1,2 @@
 export * from './hero-banners';
-export * from './restaurants';
+export * from './vendors-filters';

@@ -17,9 +17,9 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {BottomSheetContainer} from '../components/BottomSheetContainer/BottomSheetContainer';
-import {HeroBanner} from '../components/HeroBanner/HeroBanner';
-import {useHeroBanners, useRestaurants} from '../hooks';
+import {BottomSheetContainer} from '../components/bottom-sheet-container/bottom-sheet-container';
+import {HeroBanner} from '../components/hero-banner/hero-banner';
+import {useHeroBanners, useVendorsFilters} from '../hooks';
 
 const COLLAPSED_SNAP_RATIO = 0.4;
 const EXPANDED_SNAP_RATIO = 1;
@@ -37,7 +37,7 @@ export const HomeScreen = () => {
 
   const {data: banners = [], isLoading: bannersLoading} = useHeroBanners();
   const {data: restaurants = [], isLoading: restaurantsLoading} =
-    useRestaurants();
+    useVendorsFilters();
 
   const collapsedPosition = useMemo(() => {
     return height * (1 - COLLAPSED_SNAP_RATIO) - SHEET_OVERLAP_PX;

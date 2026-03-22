@@ -1,5 +1,5 @@
 import {useQuery} from '@tanstack/react-query';
-import {fetchHeroBanners} from '../../../api/hero';
+import {fetchHeroBanners} from '../../../api';
 import {HeroBannersResponse} from '../../../types/hero';
 
 export const heroBannersQueryKey = ['hero-banners'];

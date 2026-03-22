@@ -1,1 +1,1 @@
-export {heroBannersQueryKey, useHeroBanners} from './useHeroBanners';
+export {heroBannersQueryKey, useHeroBanners} from './use-hero-banners';

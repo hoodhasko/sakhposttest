@@ -22,7 +22,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import {HeroBannerResponseItem} from '../../types/hero';
-import {BannerItem} from './BannerItem';
+import {BannerItem} from './banner-item';
 
 interface BannerCarouselProps {
   banners: HeroBannerResponseItem[];

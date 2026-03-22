@@ -1,27 +1,33 @@
-import React, { memo } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { Restaurant } from '../../types/restaurant';
+import React, {memo} from 'react';
+import {Image, StyleSheet, Text, View} from 'react-native';
+import {ListVendorsFiltersItem} from '../../types';
 
 interface RestaurantCardProps {
-  restaurant: Restaurant;
+  restaurant: ListVendorsFiltersItem;
 }
 
 export const RESTAURANT_CARD_HEIGHT = 124;
 
-export const RestaurantCard = memo(({ restaurant }: RestaurantCardProps) => {
+export const RestaurantCard = memo(({restaurant}: RestaurantCardProps) => {
+  const imageUrl =
+    restaurant.image?.url_lg ||
+    restaurant.image?.url ||
+    restaurant.logo?.url_lg ||
+    restaurant.logo?.url;
+
+  const ratingText = restaurant.rating ?? '—';
+
   return (
     <View style={styles.card}>
-      <Image source={{ uri: restaurant.imageUrl }} style={styles.image} />
+      {imageUrl ? (
+        <Image source={{uri: imageUrl}} style={styles.image} />
+      ) : null}
       <View style={styles.content}>
         <Text numberOfLines={1} style={styles.name}>
-          {restaurant.name}
+          {restaurant.general_info.name}
         </Text>
-        <Text style={styles.meta}>
-          ⭐ {restaurant.rating.toFixed(1)} · {restaurant.cuisine}
-        </Text>
-        <Text style={styles.meta}>
-          {restaurant.deliveryTime} · Delivery {restaurant.deliveryFee}
-        </Text>
+        <Text style={styles.meta}>⭐ {ratingText}</Text>
+        <Text style={styles.meta}>Available now</Text>
       </View>
     </View>
   );

@@ -1,12 +1,12 @@
-import React, { memo, useMemo } from 'react';
-import BottomSheet, { useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
-import { StyleSheet, View } from 'react-native';
-import { SharedValue } from 'react-native-reanimated';
-import { Restaurant } from '../../types/restaurant';
-import { RestaurantList } from '../RestaurantList/RestaurantList';
+import React, {memo, useMemo} from 'react';
+import BottomSheet, {useBottomSheetSpringConfigs} from '@gorhom/bottom-sheet';
+import {StyleSheet, View} from 'react-native';
+import {SharedValue} from 'react-native-reanimated';
+import {ListVendorsFiltersItem} from '../../types';
+import {RestaurantList} from '../restaurant-list/restaurant-list';
 
 interface BottomSheetContainerProps {
-  restaurants: Restaurant[];
+  restaurants: ListVendorsFiltersItem[];
   animatedIndex: SharedValue<number>;
   animatedPosition: SharedValue<number>;
   progress: SharedValue<number>;
@@ -45,9 +45,8 @@ export const BottomSheetContainer = memo(
           index={0}
           overDragResistanceFactor={4}
           snapPoints={snapPoints}
-          style={[styles.sheet, { marginTop: -topOverlap }]}
-          onChange={onIndexChange}
-        >
+          style={[styles.sheet, {marginTop: -topOverlap}]}
+          onChange={onIndexChange}>
           <RestaurantList
             progress={progress}
             restaurants={restaurants}

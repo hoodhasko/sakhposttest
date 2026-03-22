@@ -1,5 +1,5 @@
-import React, { memo, useCallback, useMemo } from 'react';
-import { BottomSheetFlatList } from '@gorhom/bottom-sheet';
+import React, {memo, useCallback, useMemo} from 'react';
+import {BottomSheetFlatList} from '@gorhom/bottom-sheet';
 import {
   ListRenderItem,
   Pressable,
@@ -14,14 +14,14 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import { Restaurant } from '../../types/restaurant';
+import {ListVendorsFiltersItem} from '../../types';
 import {
   RESTAURANT_CARD_HEIGHT,
   RestaurantCard,
-} from '../RestaurantCard/RestaurantCard';
+} from '../restaurant-card/restaurant-card';
 
 interface RestaurantListProps {
-  restaurants: Restaurant[];
+  restaurants: ListVendorsFiltersItem[];
   progress: SharedValue<number>;
   topInset: number;
 }
@@ -52,72 +52,67 @@ const quickFilters = [
   },
 ];
 
-const QuickFiltersRow = memo(
-  ({ progress }: { progress: SharedValue<number> }) => {
-    const animatedStyle = useAnimatedStyle(() => {
-      return {
-        height: interpolate(
-          progress.value,
-          [0.35, 0.8],
-          [0, 44],
-          Extrapolation.CLAMP,
-        ),
-        marginBottom: interpolate(
-          progress.value,
-          [0.35, 0.8],
-          [0, 4],
-          Extrapolation.CLAMP,
-        ),
-        opacity: interpolate(
-          progress.value,
-          [0.4, 0.8],
-          [0, 1],
-          Extrapolation.CLAMP,
-        ),
-        transform: [
-          {
-            translateY: interpolate(
-              progress.value,
-              [0.4, 0.8],
-              [20, 0],
-              Extrapolation.CLAMP,
-            ),
-          },
-        ] as never,
-      };
-    });
+const QuickFiltersRow = memo(({progress}: {progress: SharedValue<number>}) => {
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      height: interpolate(
+        progress.value,
+        [0.35, 0.8],
+        [0, 44],
+        Extrapolation.CLAMP,
+      ),
+      marginBottom: interpolate(
+        progress.value,
+        [0.35, 0.8],
+        [0, 4],
+        Extrapolation.CLAMP,
+      ),
+      opacity: interpolate(
+        progress.value,
+        [0.4, 0.8],
+        [0, 1],
+        Extrapolation.CLAMP,
+      ),
+      transform: [
+        {
+          translateY: interpolate(
+            progress.value,
+            [0.4, 0.8],
+            [20, 0],
+            Extrapolation.CLAMP,
+          ),
+        },
+      ] as never,
+    };
+  });
 
-    return (
-      <Animated.View style={[styles.filtersContainer, animatedStyle]}>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.filtersContent}
-        >
-          {quickFilters.map(filter => (
-            <Pressable
-              key={filter.id}
+  return (
+    <Animated.View style={[styles.filtersContainer, animatedStyle]}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.filtersContent}>
+        {quickFilters.map(filter => (
+          <Pressable
+            key={filter.id}
+            style={[
+              styles.filterItem,
+              filter.active ? styles.filterItemActive : null,
+            ]}>
+            <Text
+              numberOfLines={1}
               style={[
-                styles.filterItem,
-                filter.active ? styles.filterItemActive : null,
-              ]}
-            >
-              <Text
-                numberOfLines={1}
-                style={[
-                  styles.filterTitle,
-                  filter.active ? styles.filterTitleActive : null,
-                ]}
-              >
-                {filter.title}
-              </Text>
-            </Pressable>
-          ))}
-        </ScrollView>
-      </Animated.View>
-    );
-  },
-);
+                styles.filterTitle,
+                filter.active ? styles.filterTitleActive : null,
+              ]}>
+              {filter.title}
+            </Text>
+          </Pressable>
+        ))}
+      </ScrollView>
+    </Animated.View>
+  );
+});
 
 QuickFiltersRow.displayName = 'QuickFiltersRow';
 
@@ -153,15 +148,24 @@ const AnimatedHeader = memo(
 AnimatedHeader.displayName = 'AnimatedHeader';
 
 export const RestaurantList = memo(
-  ({ restaurants, progress, topInset }: RestaurantListProps) => {
-    const keyExtractor = useCallback((item: Restaurant) => item.id, []);
+  ({restaurants, progress, topInset}: RestaurantListProps) => {
+    const keyExtractor = useCallback(
+      (item: ListVendorsFiltersItem) => String(item.id),
+      [],
+    );
 
-    const renderItem = useCallback<ListRenderItem<Restaurant>>(({ item }) => {
-      return <RestaurantCard restaurant={item} />;
-    }, []);
+    const renderItem = useCallback<ListRenderItem<ListVendorsFiltersItem>>(
+      ({item}) => {
+        return <RestaurantCard restaurant={item} />;
+      },
+      [],
+    );
 
     const getItemLayout = useCallback(
-      (_: ArrayLike<Restaurant> | null | undefined, index: number) => ({
+      (
+        _: ArrayLike<ListVendorsFiltersItem> | null | undefined,
+        index: number,
+      ) => ({
         index,
         length: ITEM_SIZE,
         offset: ITEM_SIZE * index,
