@@ -1,43 +1,9 @@
-import React, { memo, useCallback, useMemo } from 'react';
-import BottomSheet, {
-  BottomSheetBackgroundProps,
-  useBottomSheetSpringConfigs,
-} from '@gorhom/bottom-sheet';
+import React, { memo, useMemo } from 'react';
+import BottomSheet, { useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 import { StyleSheet, View } from 'react-native';
-import Animated, {
-  Extrapolation,
-  SharedValue,
-  interpolate,
-  useAnimatedStyle,
-} from 'react-native-reanimated';
+import { SharedValue } from 'react-native-reanimated';
 import { Restaurant } from '../../types/restaurant';
 import { RestaurantList } from '../RestaurantList/RestaurantList';
-
-interface AnimatedSheetBackgroundProps extends BottomSheetBackgroundProps {
-  progress: SharedValue<number>;
-}
-
-const AnimatedSheetBackground = memo(
-  ({ style, progress }: AnimatedSheetBackgroundProps) => {
-    const animatedStyle = useAnimatedStyle(() => {
-      const borderRadius = interpolate(
-        progress.value,
-        [0, 0.7, 1],
-        [24, 20, 0],
-        Extrapolation.CLAMP,
-      );
-
-      return {
-        borderTopLeftRadius: borderRadius,
-        borderTopRightRadius: borderRadius,
-      };
-    });
-
-    return <Animated.View style={[style, styles.background, animatedStyle]} />;
-  },
-);
-
-AnimatedSheetBackground.displayName = 'AnimatedSheetBackground';
 
 interface BottomSheetContainerProps {
   restaurants: Restaurant[];
@@ -66,13 +32,6 @@ export const BottomSheetContainer = memo(
       overshootClamping: true,
     });
 
-    const renderBackground = useCallback(
-      (props: BottomSheetBackgroundProps) => {
-        return <AnimatedSheetBackground {...props} progress={progress} />;
-      },
-      [progress],
-    );
-
     return (
       <View pointerEvents="box-none" style={styles.container}>
         <BottomSheet
@@ -80,7 +39,7 @@ export const BottomSheetContainer = memo(
           animationConfigs={animationConfigs}
           animatedIndex={animatedIndex}
           animatedPosition={animatedPosition}
-          backgroundComponent={renderBackground}
+          backgroundStyle={styles.background}
           enableDynamicSizing={false}
           handleIndicatorStyle={styles.handle}
           index={0}

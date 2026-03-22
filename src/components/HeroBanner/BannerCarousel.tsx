@@ -15,6 +15,7 @@ import {
   View,
 } from 'react-native';
 import Animated, {
+  cancelAnimation,
   SharedValue,
   useAnimatedStyle,
   useSharedValue,
@@ -25,6 +26,7 @@ import { BannerItem } from './BannerItem';
 
 interface BannerCarouselProps {
   banners: HeroBanner[];
+  isAutoplayPaused: boolean;
 }
 
 const AUTOPLAY_INTERVAL_MS = 10000;
@@ -61,88 +63,96 @@ const Indicator = memo(
 
 Indicator.displayName = 'Indicator';
 
-export const BannerCarousel = memo(({ banners }: BannerCarouselProps) => {
-  const { width } = useWindowDimensions();
-  const itemWidth = width;
-  const scrollRef = useRef<ScrollView | null>(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const autoplayProgress = useSharedValue(0);
+export const BannerCarousel = memo(
+  ({ banners, isAutoplayPaused }: BannerCarouselProps) => {
+    const { width } = useWindowDimensions();
+    const itemWidth = width;
+    const scrollRef = useRef<ScrollView | null>(null);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const autoplayProgress = useSharedValue(0);
 
-  useEffect(() => {
-    autoplayProgress.value = 0;
-    autoplayProgress.value = withTiming(1, {
-      duration: AUTOPLAY_INTERVAL_MS,
-    });
-  }, [autoplayProgress, currentIndex]);
-
-  useEffect(() => {
-    if (banners.length < 2) {
-      return;
-    }
-
-    const timer = setInterval(() => {
-      setCurrentIndex(prevIndex => {
-        const nextIndex = (prevIndex + 1) % banners.length;
-        scrollRef.current?.scrollTo({
-          animated: true,
-          x: nextIndex * itemWidth,
-          y: 0,
-        });
-        return nextIndex;
-      });
-    }, AUTOPLAY_INTERVAL_MS);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, [banners.length, itemWidth]);
-
-  const handleMomentumEnd = useCallback(
-    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      if (itemWidth <= 0) {
+    useEffect(() => {
+      if (isAutoplayPaused || banners.length < 2) {
+        cancelAnimation(autoplayProgress);
+        autoplayProgress.value = 0;
         return;
       }
 
-      const nextIndex = Math.round(
-        event.nativeEvent.contentOffset.x / itemWidth,
-      );
-      setCurrentIndex(Math.max(0, Math.min(nextIndex, banners.length - 1)));
-    },
-    [banners.length, itemWidth],
-  );
+      autoplayProgress.value = 0;
+      autoplayProgress.value = withTiming(1, {
+        duration: AUTOPLAY_INTERVAL_MS,
+      });
+    }, [autoplayProgress, banners.length, currentIndex, isAutoplayPaused]);
 
-  const indicators = useMemo(() => {
-    return banners.map((banner, index) => (
-      <Indicator
-        isActive={currentIndex === index}
-        key={banner.id}
-        progress={autoplayProgress}
-      />
-    ));
-  }, [autoplayProgress, banners, currentIndex]);
+    useEffect(() => {
+      if (banners.length < 2 || isAutoplayPaused) {
+        return;
+      }
 
-  return (
-    <View style={styles.container}>
-      <ScrollView
-        bounces={false}
-        decelerationRate="fast"
-        horizontal
-        onMomentumScrollEnd={handleMomentumEnd}
-        pagingEnabled
-        ref={scrollRef}
-        scrollEventThrottle={16}
-        showsHorizontalScrollIndicator={false}
-      >
-        {banners.map(banner => (
-          <BannerItem banner={banner} key={banner.id} width={itemWidth} />
-        ))}
-      </ScrollView>
-      <View style={styles.paginationContainer}>
-        <View style={styles.paginationInner}>{indicators}</View>
+      const timer = setInterval(() => {
+        setCurrentIndex(prevIndex => {
+          const nextIndex = (prevIndex + 1) % banners.length;
+          scrollRef.current?.scrollTo({
+            animated: true,
+            x: nextIndex * itemWidth,
+            y: 0,
+          });
+          return nextIndex;
+        });
+      }, AUTOPLAY_INTERVAL_MS);
+
+      return () => {
+        clearInterval(timer);
+      };
+    }, [banners.length, isAutoplayPaused, itemWidth]);
+
+    const handleMomentumEnd = useCallback(
+      (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+        if (itemWidth <= 0) {
+          return;
+        }
+
+        const nextIndex = Math.round(
+          event.nativeEvent.contentOffset.x / itemWidth,
+        );
+        setCurrentIndex(Math.max(0, Math.min(nextIndex, banners.length - 1)));
+      },
+      [banners.length, itemWidth],
+    );
+
+    const indicators = useMemo(() => {
+      return banners.map((banner, index) => (
+        <Indicator
+          isActive={currentIndex === index}
+          key={banner.id}
+          progress={autoplayProgress}
+        />
+      ));
+    }, [autoplayProgress, banners, currentIndex]);
+
+    return (
+      <View style={styles.container}>
+        <ScrollView
+          bounces={false}
+          decelerationRate="fast"
+          horizontal
+          onMomentumScrollEnd={handleMomentumEnd}
+          pagingEnabled
+          ref={scrollRef}
+          scrollEventThrottle={16}
+          showsHorizontalScrollIndicator={false}
+        >
+          {banners.map(banner => (
+            <BannerItem banner={banner} key={banner.id} width={itemWidth} />
+          ))}
+        </ScrollView>
+        <View style={styles.paginationContainer}>
+          <View style={styles.paginationInner}>{indicators}</View>
+        </View>
       </View>
-    </View>
-  );
-});
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   container: {

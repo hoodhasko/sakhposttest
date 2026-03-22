@@ -13,11 +13,18 @@ interface HeroBannerProps {
   banners: HeroBannerModel[];
   progress: SharedValue<number>;
   heroHeight: number;
+  isAutoplayPaused: boolean;
   topInset: number;
 }
 
 export const HeroBanner = memo(
-  ({ banners, progress, heroHeight, topInset }: HeroBannerProps) => {
+  ({
+    banners,
+    progress,
+    heroHeight,
+    isAutoplayPaused,
+    topInset,
+  }: HeroBannerProps) => {
     const animatedHeroStyle = useAnimatedStyle(() => {
       return {
         transform: [
@@ -56,7 +63,10 @@ export const HeroBanner = memo(
           shouldRasterizeIOS
           style={[styles.bannerFrame, animatedHeroStyle]}
         >
-          <BannerCarousel banners={banners} />
+          <BannerCarousel
+            banners={banners}
+            isAutoplayPaused={isAutoplayPaused}
+          />
         </Animated.View>
       </View>
     );

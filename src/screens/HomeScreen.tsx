@@ -10,6 +10,8 @@ import {
 import Animated, {
   Extrapolation,
   interpolate,
+  runOnJS,
+  useAnimatedReaction,
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
@@ -32,6 +34,7 @@ export const HomeScreen = () => {
   const animatedPosition = useSharedValue(height * (1 - COLLAPSED_SNAP_RATIO));
   const [statusBarStyle, setStatusBarStyle] =
     useState<StatusBarStyle>('light-content');
+  const [isAutoplayPaused, setIsAutoplayPaused] = useState(false);
 
   const { data: banners = [], isLoading: bannersLoading } = useHeroBanners();
   const { data: restaurants = [], isLoading: restaurantsLoading } =
@@ -58,6 +61,16 @@ export const HomeScreen = () => {
     setStatusBarStyle(index >= 1 ? 'dark-content' : 'light-content');
   }, []);
 
+  useAnimatedReaction(
+    () => progress.value > 0.01,
+    (next, prev) => {
+      if (next !== prev) {
+        runOnJS(setIsAutoplayPaused)(next);
+      }
+    },
+    [progress],
+  );
+
   const animatedBackdropStyle = useAnimatedStyle(() => {
     return {
       opacity: 0,
@@ -75,6 +88,7 @@ export const HomeScreen = () => {
       <HeroBanner
         banners={banners}
         heroHeight={heroHeight}
+        isAutoplayPaused={isAutoplayPaused}
         progress={progress}
         topInset={topInset}
       />
