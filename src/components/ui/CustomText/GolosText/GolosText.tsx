@@ -3,7 +3,7 @@ import {StyleSheet, Text, TextProps} from 'react-native';
 
 import {BASE_COLORS} from '@config/constants';
 
-interface InterTextProps extends TextProps {
+interface GolosTextProps extends TextProps {
   wight?: keyof typeof fontFamily;
   fs?: number;
   c?: string;
@@ -11,7 +11,7 @@ interface InterTextProps extends TextProps {
   flex?: number;
 }
 
-export const InterText: FC<InterTextProps> = memo(
+export const GolosText: FC<GolosTextProps> = memo(
   ({children, wight = 400, fs, c, lh, flex, ...props}) => {
     return (
       <Text
@@ -20,7 +20,7 @@ export const InterText: FC<InterTextProps> = memo(
         style={[
           styles.text,
           {
-            fontFamily: fontFamily[wight],
+            fontFamily: fontFamily[wight] || 'GolosText-Regular',
             fontSize: fs,
             color: c,
             lineHeight: lh,
@@ -36,18 +36,17 @@ export const InterText: FC<InterTextProps> = memo(
 
 const styles = StyleSheet.create({
   text: {
-    color: BASE_COLORS.black100,
+    color: BASE_COLORS.SUI_COLOR_TEXT,
     fontSize: 14,
     lineHeight: 18,
   },
 });
 
 const fontFamily = {
-  200: 'Inter_18pt-ExtraLight',
-  300: 'Inter_18pt-Light',
-  400: 'Inter_18pt-Regular',
-  500: 'Inter_18pt-Medium',
-  600: 'Inter_18pt-SemiBold',
-  700: 'Inter_18pt-Bold',
-  800: 'Inter_18pt-ExtraBold',
+  400: 'GolosText-Regular',
+  500: 'GolosText-Medium',
+  600: 'GolosText-SemiBold',
+  700: 'GolosText-Bold',
+  800: 'GolosText-ExtraBold',
+  900: 'GolosText-Black',
 };

@@ -5,8 +5,8 @@ import {BASE_COLORS} from '@config/constants';
 import {CustomSvgProps} from '@assets/svg/types';
 
 export const OutlineHeartSvg: FC<CustomSvgProps> = ({
-  color = BASE_COLORS.black(),
-  size = 20,
+  color = BASE_COLORS.white(),
+  size = 16,
   ...props
 }) => {
   return (

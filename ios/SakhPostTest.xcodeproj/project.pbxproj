@@ -12,6 +12,12 @@
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		BA8E2FA2B1196E8E5B1AB0C6 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		925EEF4C7DB342EDB5B7A5CB /* GolosText-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 948DA8E1784E4033AD3AB61F /* GolosText-Bold.ttf */; };
+		1B655BA0622E46929980AB17 /* GolosText-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 90F9116AE5A644D29A894D86 /* GolosText-Black.ttf */; };
+		FF123D380AA94BC794F7DA86 /* GolosText-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1740B2C1DB0840EAA7A21853 /* GolosText-Regular.ttf */; };
+		9075581301D346BDAD3F8950 /* GolosText-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A421ADB6309B41A2ACCC40A1 /* GolosText-ExtraBold.ttf */; };
+		0BD5EA45B4D340EB904B47D2 /* GolosText-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 53E17B0F7E564A209682041F /* GolosText-Medium.ttf */; };
+		31900F52A5DE46D68E8504F2 /* GolosText-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 536A4711FCE14ED08FEC8E53 /* GolosText-SemiBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +31,12 @@
 		81EA26714A9D0DE21B603CBA /* libPods-SakhPostTest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SakhPostTest.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBA018026A5502798895E94E /* Pods-SakhPostTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SakhPostTest.release.xcconfig"; path = "Target Support Files/Pods-SakhPostTest/Pods-SakhPostTest.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		948DA8E1784E4033AD3AB61F /* GolosText-Bold.ttf */ = {isa = PBXFileReference; name = "GolosText-Bold.ttf"; path = "../assets/fonts/Golos/GolosText-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		90F9116AE5A644D29A894D86 /* GolosText-Black.ttf */ = {isa = PBXFileReference; name = "GolosText-Black.ttf"; path = "../assets/fonts/Golos/GolosText-Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		1740B2C1DB0840EAA7A21853 /* GolosText-Regular.ttf */ = {isa = PBXFileReference; name = "GolosText-Regular.ttf"; path = "../assets/fonts/Golos/GolosText-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A421ADB6309B41A2ACCC40A1 /* GolosText-ExtraBold.ttf */ = {isa = PBXFileReference; name = "GolosText-ExtraBold.ttf"; path = "../assets/fonts/Golos/GolosText-ExtraBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		53E17B0F7E564A209682041F /* GolosText-Medium.ttf */ = {isa = PBXFileReference; name = "GolosText-Medium.ttf"; path = "../assets/fonts/Golos/GolosText-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		536A4711FCE14ED08FEC8E53 /* GolosText-SemiBold.ttf */ = {isa = PBXFileReference; name = "GolosText-SemiBold.ttf"; path = "../assets/fonts/Golos/GolosText-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +87,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				AD1477AA3A5F459CB54512BE /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -97,6 +110,20 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		AD1477AA3A5F459CB54512BE /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				948DA8E1784E4033AD3AB61F /* GolosText-Bold.ttf */,
+				90F9116AE5A644D29A894D86 /* GolosText-Black.ttf */,
+				1740B2C1DB0840EAA7A21853 /* GolosText-Regular.ttf */,
+				A421ADB6309B41A2ACCC40A1 /* GolosText-ExtraBold.ttf */,
+				53E17B0F7E564A209682041F /* GolosText-Medium.ttf */,
+				536A4711FCE14ED08FEC8E53 /* GolosText-SemiBold.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -161,6 +188,12 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				BA8E2FA2B1196E8E5B1AB0C6 /* PrivacyInfo.xcprivacy in Resources */,
+				925EEF4C7DB342EDB5B7A5CB /* GolosText-Bold.ttf in Resources */,
+				1B655BA0622E46929980AB17 /* GolosText-Black.ttf in Resources */,
+				FF123D380AA94BC794F7DA86 /* GolosText-Regular.ttf in Resources */,
+				9075581301D346BDAD3F8950 /* GolosText-ExtraBold.ttf in Resources */,
+				0BD5EA45B4D340EB904B47D2 /* GolosText-Medium.ttf in Resources */,
+				31900F52A5DE46D68E8504F2 /* GolosText-SemiBold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

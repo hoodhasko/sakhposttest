@@ -1,11 +1,12 @@
 import React, {memo, useCallback, useMemo} from 'react';
 import {BottomSheetFlatList} from '@gorhom/bottom-sheet';
-import {ListRenderItem, StyleSheet, Text, View} from 'react-native';
+import {ListRenderItem, StyleSheet, View} from 'react-native';
 import {SharedValue} from 'react-native-reanimated';
 import {ListVendorsFiltersItem} from '@models/index';
 import {RESTAURANT_CARD_HEIGHT, RestaurantCard} from './restaurant-card';
 import {AnimatedHeader} from './animated-header';
 import {QuickFiltersRow} from './quick-filters-row';
+import {GolosText} from '@components/ui';
 
 interface RestaurantListProps {
   restaurants: ListVendorsFiltersItem[];
@@ -44,45 +45,48 @@ export const RestaurantList = memo(
     const headerComponent = useMemo(() => {
       return (
         <AnimatedHeader progress={progress} topInset={topInset}>
-          <QuickFiltersRow progress={progress} />
           <View style={styles.header}>
-            <Text style={styles.title}>Недалеко от вас</Text>
+            <QuickFiltersRow progress={progress} />
+
+            <GolosText fs={20} lh={28} wight={600}>
+              Недалеко от вас
+            </GolosText>
           </View>
         </AnimatedHeader>
       );
     }, [progress, topInset]);
 
     return (
-      <BottomSheetFlatList
-        ListHeaderComponent={headerComponent}
-        contentContainerStyle={styles.contentContainer}
-        data={restaurants}
-        getItemLayout={getItemLayout}
-        initialNumToRender={8}
-        keyExtractor={keyExtractor}
-        maxToRenderPerBatch={8}
-        removeClippedSubviews
-        renderItem={renderItem}
-        showsVerticalScrollIndicator={false}
-        updateCellsBatchingPeriod={50}
-        windowSize={10}
-      />
+      <>
+        {headerComponent}
+
+        <BottomSheetFlatList
+          contentContainerStyle={styles.contentContainer}
+          data={restaurants}
+          getItemLayout={getItemLayout}
+          initialNumToRender={8}
+          keyExtractor={keyExtractor}
+          maxToRenderPerBatch={8}
+          removeClippedSubviews
+          renderItem={renderItem}
+          showsVerticalScrollIndicator={false}
+          updateCellsBatchingPeriod={50}
+          windowSize={10}
+        />
+      </>
     );
   },
 );
 
 const styles = StyleSheet.create({
   header: {
-    paddingBottom: 8,
-    paddingTop: 2,
-  },
-  title: {
-    color: '#0F1728',
-    fontSize: 22,
-    fontWeight: '800',
+    paddingTop: 16,
+    marginBottom: 12,
+    paddingHorizontal: 16,
   },
   contentContainer: {
     paddingBottom: 24,
     paddingHorizontal: 16,
+    gap: 24,
   },
 });

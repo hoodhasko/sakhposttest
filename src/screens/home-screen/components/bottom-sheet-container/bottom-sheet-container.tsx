@@ -41,7 +41,7 @@ export const BottomSheetContainer = memo(
           animatedPosition={animatedPosition}
           backgroundStyle={styles.background}
           enableDynamicSizing={false}
-          handleIndicatorStyle={styles.handle}
+          handleComponent={null}
           index={0}
           overDragResistanceFactor={4}
           snapPoints={snapPoints}
@@ -65,10 +65,6 @@ const styles = StyleSheet.create({
   },
   background: {
     backgroundColor: '#F6F8FB',
-  },
-  handle: {
-    backgroundColor: '#BEC7D4',
-    width: 48,
   },
   sheet: {
     elevation: 30,

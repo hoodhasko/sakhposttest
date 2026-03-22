@@ -1,6 +1,8 @@
 import React, {memo} from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, View} from 'react-native';
 import {HeroBannerResponseItem} from '@models/index';
+import {GolosText} from '@components/ui';
+import {BASE_COLORS} from '@config/constants';
 
 interface BannerItemProps {
   banner: HeroBannerResponseItem;
@@ -14,9 +16,14 @@ export const BannerItem = memo(({banner, width}: BannerItemProps) => {
         <Image source={{uri: banner.media.url}} style={styles.bannerImage} />
         <View style={styles.overlay} />
         <View style={styles.content}>
-          <Text numberOfLines={2} style={styles.title}>
+          <GolosText
+            numberOfLines={2}
+            wight={600}
+            c={BASE_COLORS.white()}
+            fs={18}
+            lh={24}>
             {banner.title}
-          </Text>
+          </GolosText>
         </View>
       </View>
     </View>
@@ -44,10 +51,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 72,
     rowGap: 6,
-  },
-  title: {
-    color: '#FFFFFF',
-    fontSize: 24,
-    fontWeight: '800',
   },
 });

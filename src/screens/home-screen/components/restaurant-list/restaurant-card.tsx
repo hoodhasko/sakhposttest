@@ -1,7 +1,9 @@
-import React, {memo} from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import React, {memo, useCallback, useState} from 'react';
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {ListVendorsFiltersItem} from '@models/index';
-import {OutlineHeartSvg} from '@assets/svg';
+import {OutlineHeartSvg, StarFilledSvg} from '@assets/svg';
+import {GolosText} from '@components/ui';
+import {BASE_COLORS} from '@config/constants';
 
 interface RestaurantCardProps {
   restaurant: ListVendorsFiltersItem;
@@ -10,65 +12,85 @@ interface RestaurantCardProps {
 export const RESTAURANT_CARD_HEIGHT = 124;
 
 export const RestaurantCard = memo(({restaurant}: RestaurantCardProps) => {
-  const imageUrl =
-    restaurant.image?.url_lg ||
-    restaurant.image?.url ||
-    restaurant.logo?.url_lg ||
-    restaurant.logo?.url;
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
-  const ratingText = restaurant.rating ?? '—';
+  const handleFavoritePress = useCallback(() => {
+    setIsFavorite(prev => !prev);
+  }, []);
 
   return (
-    <View style={styles.card}>
-      <OutlineHeartSvg color="red" />
-      {imageUrl ? (
-        <Image source={{uri: imageUrl}} style={styles.image} />
-      ) : null}
-      <View style={styles.content}>
-        <Text numberOfLines={1} style={styles.name}>
-          {restaurant.general_info.name}
-        </Text>
-        <Text style={styles.meta}>⭐ {ratingText}</Text>
-        <Text style={styles.meta}>Available now</Text>
+    <View>
+      <View>
+        <Image source={{uri: restaurant.image.url}} style={styles.image} />
+
+        <TouchableOpacity
+          onPress={handleFavoritePress}
+          style={styles.likeButton}>
+          <OutlineHeartSvg color={isFavorite ? 'red' : BASE_COLORS.white()} />
+        </TouchableOpacity>
+
+        <View style={styles.logoContainer}>
+          <Image source={{uri: restaurant.logo.url}} style={styles.logo} />
+        </View>
+      </View>
+
+      <GolosText wight={500} numberOfLines={1} style={styles.name}>
+        {restaurant.general_info.name}
+      </GolosText>
+
+      <View style={styles.infoRow}>
+        <StarFilledSvg size={12} />
+
+        <GolosText fs={13} lh={16}>
+          {restaurant.rating ?? '—'}
+          <GolosText c={BASE_COLORS.SUI_COLOR_TEXT_TERTIARY}> (10) </GolosText>
+          <GolosText c={BASE_COLORS.SUI_COLOR_TEXT_TERTIARY}>
+            • Европейская кухня
+          </GolosText>
+        </GolosText>
       </View>
     </View>
   );
 });
 
 const styles = StyleSheet.create({
-  card: {
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    flexDirection: 'row',
-    height: RESTAURANT_CARD_HEIGHT,
-    marginBottom: 12,
-    overflow: 'hidden',
-    shadowColor: '#0A1020',
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-  },
   image: {
-    height: '100%',
-    width: 112,
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: 12,
-    rowGap: 7,
+    width: '100%',
+    height: 193,
+    borderRadius: 16,
   },
   name: {
-    color: '#0B1220',
-    fontSize: 18,
-    fontWeight: '700',
+    marginTop: 8,
+    fontSize: 16,
+    lineHeight: 24,
+    color: BASE_COLORS.SUI_COLOR_TEXT,
   },
-  meta: {
-    color: '#4D5A72',
-    fontSize: 13,
-    fontWeight: '500',
+  logoContainer: {
+    position: 'absolute',
+    bottom: 8,
+    left: 8,
+    backgroundColor: BASE_COLORS.white(),
+    width: 48,
+    height: 48,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  logo: {
+    width: '80%',
+    height: '80%',
+  },
+  likeButton: {
+    position: 'absolute',
+    top: 12,
+    right: 12,
+    backgroundColor: BASE_COLORS.black(0.7),
+    padding: 8,
+    borderRadius: 100,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
   },
 });
