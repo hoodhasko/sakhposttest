@@ -19,7 +19,7 @@ import {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import {HeroBannerResponseItem} from '../../../../types/hero';
+import {HeroBannerResponseItem} from '@models/index';
 import {BannerIndicator} from './banner-indicator';
 import {BannerItem} from './banner-item';
 

@@ -103,7 +103,6 @@ const styles = StyleSheet.create({
   },
   filtersContent: {
     columnGap: 12,
-    paddingHorizontal: 16,
   },
   filterItem: {
     alignItems: 'center',

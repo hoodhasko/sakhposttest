@@ -1,4 +1,5 @@
-const API_BASE_URL = 'https://delivery-app-api.sakhdev.ru';
+import {API_BASE_URL} from '@config/constants';
+
 const REQUEST_TIMEOUT_MS = 10000;
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';

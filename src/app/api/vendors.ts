@@ -1,7 +1,7 @@
 import {api} from './api';
-import {ListVendorsFiltersResponse} from '../../types';
+import {ListVendorsFiltersResponse} from '@models/index';
 
-const VENDORS_FILTERS_ENDPOINT = '/api/vendors/filters';
+const VENDORS_FILTERS_ENDPOINT = '/vendors/filters';
 
 export const fetchVendorsFilters =
   async (): Promise<ListVendorsFiltersResponse> => {

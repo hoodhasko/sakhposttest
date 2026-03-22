@@ -16,7 +16,7 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useHeroBanners, useVendorsFilters} from '../../app';
+import {useHeroBanners, useVendorsFilters} from '@app/hooks';
 import {
   ErrorState,
   LoadingState,

@@ -1,6 +1,7 @@
 import React, {memo} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
-import {ListVendorsFiltersItem} from '../../../../types';
+import {ListVendorsFiltersItem} from '@models/index';
+import {OutlineHeartSvg} from '@assets/svg';
 
 interface RestaurantCardProps {
   restaurant: ListVendorsFiltersItem;
@@ -19,6 +20,7 @@ export const RestaurantCard = memo(({restaurant}: RestaurantCardProps) => {
 
   return (
     <View style={styles.card}>
+      <OutlineHeartSvg color="red" />
       {imageUrl ? (
         <Image source={{uri: imageUrl}} style={styles.image} />
       ) : null}

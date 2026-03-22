@@ -2,7 +2,7 @@ import React, {memo, useCallback, useMemo} from 'react';
 import {BottomSheetFlatList} from '@gorhom/bottom-sheet';
 import {ListRenderItem, StyleSheet, Text, View} from 'react-native';
 import {SharedValue} from 'react-native-reanimated';
-import {ListVendorsFiltersItem} from '../../../../types';
+import {ListVendorsFiltersItem} from '@models/index';
 import {RESTAURANT_CARD_HEIGHT, RestaurantCard} from './restaurant-card';
 import {AnimatedHeader} from './animated-header';
 import {QuickFiltersRow} from './quick-filters-row';
@@ -46,7 +46,7 @@ export const RestaurantList = memo(
         <AnimatedHeader progress={progress} topInset={topInset}>
           <QuickFiltersRow progress={progress} />
           <View style={styles.header}>
-            <Text style={styles.title}>Restaurants nearby</Text>
+            <Text style={styles.title}>Недалеко от вас</Text>
           </View>
         </AnimatedHeader>
       );
@@ -74,7 +74,6 @@ export const RestaurantList = memo(
 const styles = StyleSheet.create({
   header: {
     paddingBottom: 8,
-    paddingHorizontal: 16,
     paddingTop: 2,
   },
   title: {

@@ -1,9 +1,9 @@
 import {useQuery} from '@tanstack/react-query';
-import {fetchVendorsFilters} from '../../../api';
+import {fetchVendorsFilters} from '@app/api';
 import {
   ListVendorsFiltersItem,
   ListVendorsFiltersResponse,
-} from '../../../../types';
+} from '@models/index';
 
 export const vendorsFiltersQueryKey = ['vendors-filters'];
 
@@ -12,9 +12,5 @@ export const useVendorsFilters = () => {
     queryKey: vendorsFiltersQueryKey,
     queryFn: fetchVendorsFilters,
     select: payload => payload.data,
-    staleTime: 1000 * 60 * 3,
-    gcTime: 1000 * 60 * 20,
-    refetchOnMount: false,
-    refetchOnReconnect: true,
   });
 };
