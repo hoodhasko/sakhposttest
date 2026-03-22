@@ -1,16 +1,16 @@
-import React, { memo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, {memo} from 'react';
+import {StyleSheet, View} from 'react-native';
 import Animated, {
   Extrapolation,
   SharedValue,
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import { HeroBanner as HeroBannerModel } from '../../types/hero';
-import { BannerCarousel } from './BannerCarousel';
+import {HeroBannerResponseItem} from '../../types/hero';
+import {BannerCarousel} from './BannerCarousel';
 
 interface HeroBannerProps {
-  banners: HeroBannerModel[];
+  banners: HeroBannerResponseItem[];
   progress: SharedValue<number>;
   heroHeight: number;
   isAutoplayPaused: boolean;
@@ -57,12 +57,11 @@ export const HeroBanner = memo(
     }, [progress, topInset]);
 
     return (
-      <View style={[styles.container, { height: heroHeight }]}>
+      <View style={[styles.container, {height: heroHeight}]}>
         <Animated.View
           renderToHardwareTextureAndroid
           shouldRasterizeIOS
-          style={[styles.bannerFrame, animatedHeroStyle]}
-        >
+          style={[styles.bannerFrame, animatedHeroStyle]}>
           <BannerCarousel
             banners={banners}
             isAutoplayPaused={isAutoplayPaused}
@@ -84,5 +83,3 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
 });
-
-HeroBanner.displayName = 'HeroBanner';

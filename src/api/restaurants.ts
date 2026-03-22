@@ -1,4 +1,4 @@
-import { request } from './client';
+import { api } from './api';
 import { Restaurant } from '../types/restaurant';
 
 const RESTAURANT_ENDPOINTS = ['/restaurants', '/api/customer/restaurants'];
@@ -161,7 +161,7 @@ const normalizeRestaurant = (
 const fetchRemoteRestaurants = async (): Promise<Restaurant[] | null> => {
   for (const endpoint of RESTAURANT_ENDPOINTS) {
     try {
-      const payload = await request<unknown>(endpoint);
+      const payload = await api.get<unknown>(endpoint);
       const normalized = pickArrayPayload(payload)
         .map((item, index) => normalizeRestaurant(item, index))
         .filter((item): item is Restaurant => Boolean(item));

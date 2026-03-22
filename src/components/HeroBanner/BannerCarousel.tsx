@@ -21,15 +21,15 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { HeroBanner } from '../../types/hero';
-import { BannerItem } from './BannerItem';
+import {HeroBannerResponseItem} from '../../types/hero';
+import {BannerItem} from './BannerItem';
 
 interface BannerCarouselProps {
-  banners: HeroBanner[];
+  banners: HeroBannerResponseItem[];
   isAutoplayPaused: boolean;
 }
 
-const AUTOPLAY_INTERVAL_MS = 10000;
+const AUTOPLAY_INTERVAL_MS = 5000;
 const INDICATOR_WIDTH = 16;
 
 const Indicator = memo(
@@ -53,8 +53,7 @@ const Indicator = memo(
           isActive
             ? styles.indicatorTrackActive
             : styles.indicatorTrackInactive,
-        ]}
-      >
+        ]}>
         <Animated.View style={[styles.indicatorFill, fillStyle]} />
       </View>
     );
@@ -64,8 +63,8 @@ const Indicator = memo(
 Indicator.displayName = 'Indicator';
 
 export const BannerCarousel = memo(
-  ({ banners, isAutoplayPaused }: BannerCarouselProps) => {
-    const { width } = useWindowDimensions();
+  ({banners, isAutoplayPaused}: BannerCarouselProps) => {
+    const {width} = useWindowDimensions();
     const itemWidth = width;
     const scrollRef = useRef<ScrollView | null>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -89,22 +88,20 @@ export const BannerCarousel = memo(
         return;
       }
 
-      const timer = setInterval(() => {
-        setCurrentIndex(prevIndex => {
-          const nextIndex = (prevIndex + 1) % banners.length;
-          scrollRef.current?.scrollTo({
-            animated: true,
-            x: nextIndex * itemWidth,
-            y: 0,
-          });
-          return nextIndex;
+      const timer = setTimeout(() => {
+        const nextIndex = (currentIndex + 1) % banners.length;
+        scrollRef.current?.scrollTo({
+          animated: true,
+          x: nextIndex * itemWidth,
+          y: 0,
         });
+        setCurrentIndex(nextIndex);
       }, AUTOPLAY_INTERVAL_MS);
 
       return () => {
-        clearInterval(timer);
+        clearTimeout(timer);
       };
-    }, [banners.length, isAutoplayPaused, itemWidth]);
+    }, [banners.length, currentIndex, isAutoplayPaused, itemWidth]);
 
     const handleMomentumEnd = useCallback(
       (event: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -140,8 +137,7 @@ export const BannerCarousel = memo(
           pagingEnabled
           ref={scrollRef}
           scrollEventThrottle={16}
-          showsHorizontalScrollIndicator={false}
-        >
+          showsHorizontalScrollIndicator={false}>
           {banners.map(banner => (
             <BannerItem banner={banner} key={banner.id} width={itemWidth} />
           ))}

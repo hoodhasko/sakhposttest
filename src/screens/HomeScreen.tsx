@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {
   ActivityIndicator,
   StatusBar,
@@ -16,19 +16,18 @@ import Animated, {
   useDerivedValue,
   useSharedValue,
 } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BottomSheetContainer } from '../components/BottomSheetContainer/BottomSheetContainer';
-import { HeroBanner } from '../components/HeroBanner/HeroBanner';
-import { useHeroBanners } from '../hooks/useHeroBanners';
-import { useRestaurants } from '../hooks/useRestaurants';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {BottomSheetContainer} from '../components/BottomSheetContainer/BottomSheetContainer';
+import {HeroBanner} from '../components/HeroBanner/HeroBanner';
+import {useHeroBanners, useRestaurants} from '../hooks';
 
 const COLLAPSED_SNAP_RATIO = 0.4;
 const EXPANDED_SNAP_RATIO = 1;
 const SHEET_OVERLAP_PX = 14;
 
 export const HomeScreen = () => {
-  const { height } = useWindowDimensions();
-  const { top: topInset } = useSafeAreaInsets();
+  const {height} = useWindowDimensions();
+  const {top: topInset} = useSafeAreaInsets();
 
   const animatedIndex = useSharedValue(0);
   const animatedPosition = useSharedValue(height * (1 - COLLAPSED_SNAP_RATIO));
@@ -36,8 +35,8 @@ export const HomeScreen = () => {
     useState<StatusBarStyle>('light-content');
   const [isAutoplayPaused, setIsAutoplayPaused] = useState(false);
 
-  const { data: banners = [], isLoading: bannersLoading } = useHeroBanners();
-  const { data: restaurants = [], isLoading: restaurantsLoading } =
+  const {data: banners = [], isLoading: bannersLoading} = useHeroBanners();
+  const {data: restaurants = [], isLoading: restaurantsLoading} =
     useRestaurants();
 
   const collapsedPosition = useMemo(() => {

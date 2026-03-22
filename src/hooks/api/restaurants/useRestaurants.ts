@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
-import { fetchRestaurants } from '../api/restaurants';
-import { Restaurant } from '../types/restaurant';
+import {useQuery} from '@tanstack/react-query';
+import {fetchRestaurants} from '../../../api/restaurants';
+import {Restaurant} from '../../../types/restaurant';
 
 export const restaurantsQueryKey = ['restaurants'];
 
