@@ -9,8 +9,6 @@ interface RestaurantCardProps {
   restaurant: ListVendorsFiltersItem;
 }
 
-export const RESTAURANT_CARD_HEIGHT = 124;
-
 export const RestaurantCard = memo(({restaurant}: RestaurantCardProps) => {
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
 

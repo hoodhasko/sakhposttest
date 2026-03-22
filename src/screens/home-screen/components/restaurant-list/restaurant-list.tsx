@@ -3,7 +3,7 @@ import {BottomSheetFlatList} from '@gorhom/bottom-sheet';
 import {ListRenderItem, StyleSheet, View} from 'react-native';
 import {SharedValue} from 'react-native-reanimated';
 import {ListVendorsFiltersItem} from '@models/index';
-import {RESTAURANT_CARD_HEIGHT, RestaurantCard} from './restaurant-card';
+import {RestaurantCard} from './restaurant-card';
 import {AnimatedHeader} from './animated-header';
 import {QuickFiltersRow} from './quick-filters-row';
 import {GolosText} from '@components/ui';
@@ -13,8 +13,6 @@ interface RestaurantListProps {
   progress: SharedValue<number>;
   topInset: number;
 }
-
-const ITEM_SIZE = RESTAURANT_CARD_HEIGHT + 12;
 
 export const RestaurantList = memo(
   ({restaurants, progress, topInset}: RestaurantListProps) => {
@@ -27,18 +25,6 @@ export const RestaurantList = memo(
       ({item}) => {
         return <RestaurantCard restaurant={item} />;
       },
-      [],
-    );
-
-    const getItemLayout = useCallback(
-      (
-        _: ArrayLike<ListVendorsFiltersItem> | null | undefined,
-        index: number,
-      ) => ({
-        index,
-        length: ITEM_SIZE,
-        offset: ITEM_SIZE * index,
-      }),
       [],
     );
 
@@ -63,7 +49,6 @@ export const RestaurantList = memo(
         <BottomSheetFlatList
           contentContainerStyle={styles.contentContainer}
           data={restaurants}
-          getItemLayout={getItemLayout}
           initialNumToRender={8}
           keyExtractor={keyExtractor}
           maxToRenderPerBatch={8}
